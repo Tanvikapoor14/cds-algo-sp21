@@ -16,8 +16,8 @@ class Portfolio():
     def __init__(self, w_to_change, timeline, positions):
         self.willing_to_change = w_to_change
         self.timeline = timeline
-        self.quant_positions = {}
-        self.num_positions = len(positions)
+        self.positions = positions
+        self.num_stocks = self.get_num_stocks()
         self.amt_categories = {
             'c1': 0,
             'c2': 0,
@@ -33,6 +33,17 @@ class Portfolio():
             'c5': .2
         }
 
+    """
+    Counts the number of individual stocks that a person has in their portfolio. 
+
+    Returns:
+        int
+    """
+    def get_num_stocks(self):
+        n = 0 
+        for p in self.positions:
+            n += self.positions[p] 
+        return n 
 
     """
     Uses static data to categorize the positions inside a portfolio. It updates

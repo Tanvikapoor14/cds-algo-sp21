@@ -1,3 +1,5 @@
+from portfolio import Portfolio
+
 """
 Allows the user to input the positions that are currently in their portfolio. 
 
@@ -5,10 +7,19 @@ Returns:
     Portfolio object
 """
 def input_portfolio():
-    #get % willing to change
-    #get timeline 
-    #while loop until done, takes in two data points (ticker, quantity)
-    pass
+    willing_to_change = float(input("Enter the percent of your portfolio you are willing to change: ").strip())
+    timeline = float(input("Enter the number of years you plan on leaving your money in the stock market: ").strip())
+    positions = {}
+    while True:
+        ticker = input("Enter the ticker for a stock: ").strip()
+        quant = int(input("Enter the quantity of this stock in your portfolio: ").strip())
+        done = input('Enter "d" if you are done. Press enter to continue: ').strip()
+
+        positions[ticker] = quant
+        if done == "d":
+            break
+
+    return Portfolio(willing_to_change, timeline, positions)
 
 
 """
@@ -20,7 +31,8 @@ Parameters:
     portfolio: Portfolio object 
 """
 def determine_new_balance(portfolio):
-    pass 
+    pass
+
 
 """
 Uses the initial_cat_ratios method and the new_category_ratios of a portfolio 
@@ -31,6 +43,7 @@ Returns:
 """
 def determine_new_quantities(portfolio):
     pass
+
 
 """
 Uses the values determined from the determine_new_quantities function in order 
