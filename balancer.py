@@ -1,4 +1,5 @@
 from portfolio import Portfolio
+from yahoo_client import *
 
 """
 Allows the user to input the positions that are currently in their portfolio. 
