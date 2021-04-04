@@ -45,17 +45,6 @@ def determine_new_quantities(portfolio):
     pass
 
 
-"""
-Uses the values determined from the determine_new_quantities function in order 
-to look through Yahoo finance API and find stocks within the desired category
-that are labeled as 'Strong buys' to recommend to the user. 
-
-Returns:
-    {string: int} dict
-"""
-def determine_strong_buys(num_cat_buys):
-    pass
-
 
 def main():
     portfolio = input_portfolio()
