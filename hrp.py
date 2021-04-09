@@ -3,6 +3,12 @@ import scipy.cluster.hierarchy as sch,random,numpy as np,pandas as pd
 
 """
 Compute the inverse-varaiance portfolio.
+
+Parameters:
+    cov: pandas.core.frame.DataFrame
+
+Returns:
+    numpy.ndarray
 """
 def getIVP(cov, **kargs):
     ivp = 1./np.diag(cov)
@@ -11,6 +17,13 @@ def getIVP(cov, **kargs):
 
 """
 Compute variance per cluster.
+
+Parameters: 
+    cov: pandas.core.frame.DataFrame
+    cItems: int list 
+
+Returns:
+    numpy.float64
 """
 def getClusterVar(cov, cItems):
     cov_ = cov.loc[cItems, cItems] # matrix slice
@@ -20,6 +33,12 @@ def getClusterVar(cov, cItems):
 
 """
 Sort clustered items by distance
+
+Parameters:
+    link: numpy.ndarray
+
+Returns:
+    int list 
 """
 def getQuasiDiag(link):
     link = link.astype(int)
@@ -39,6 +58,13 @@ def getQuasiDiag(link):
 
 """
 Compute HRP alloc
+
+Parameters: 
+    cov: pandas.core.frame.DataFrame
+    sortIx: int list 
+
+Returns:
+    pandas.core.series.Series
 """
 def getRecBipart(cov, sortIx):
     w = pd.Series(1, index=sortIx)
@@ -58,6 +84,12 @@ def getRecBipart(cov, sortIx):
 
 """
 A distance matrix based on correlation, where 0<=d[i,j]<=1
+
+Parameters: 
+    corr: pandas.core.frame.DataFrame
+
+Returns:
+    pandas.core.frame.DataFrame
 """
 def correlDist(corr):
     #This is a proper distance matrix 
@@ -66,6 +98,11 @@ def correlDist(corr):
 
 """
 Heatmap of the correlation matrix.
+
+Parameters:
+    path: str
+    corr: pandas.core.frame.DataFrame
+    labels: pandas.core.indexes.numeric.Int64Index
 """
 def plotCorrMatrix(path, corr, labels=None):
     if labels is None:
@@ -81,6 +118,15 @@ def plotCorrMatrix(path, corr, labels=None):
 
 """
 Time series of correlated variables.
+
+Parameters:
+    nObds: int
+    size0: int
+    size1: int 
+    sigma1: float 
+
+Returns:
+    (pandas.core.frame.DataFrame, int list)
 """
 def generateData(nObs, size0, size1, sigma1):
     #1) generating some uncorrelated data 
@@ -94,6 +140,10 @@ def generateData(nObs, size0, size1, sigma1):
     x = pd.DataFrame(x, columns=range(1, x.shape[1] + 1))
     return x, cols 
 
+"""
+Returns:
+    pandas.core.series.Series
+"""
 def main():
     #1) generate correlated data 
     nObs, size0, size1, sigma1 = 10000, 5, 5, .25
