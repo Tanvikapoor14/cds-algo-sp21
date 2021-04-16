@@ -141,15 +141,18 @@ def generateData(nObs, size0, size1, sigma1):
     return x, cols 
 
 """
+Parameters:
+    x: pandas.core.frame.DataFrame
+
 Returns:
     pandas.core.series.Series
 """
-def main():
+def main(x):
     #1) generate correlated data 
-    nObs, size0, size1, sigma1 = 10000, 5, 5, .25
-    x, cols = generateData(nObs, size0, size1, sigma1)
+    # nObs, size0, size1, sigma1 = 10000, 5, 5, .25
+    # x, cols = generateData(nObs, size0, size1, sigma1)
     print(x)
-    print([(j+1, size0+i) for i,j in enumerate(cols, 1)])
+    # print([(j+1, size0+i) for i,j in enumerate(cols, 1)])
     #2) compute and plot correl matrix 
     cov, corr = x.cov(), x.corr()
     plotCorrMatrix('HRP3_corr0.png', corr, labels=corr.columns)
