@@ -1,4 +1,4 @@
-import datetime
+import sectordata
 
 COMM = 'Communication'
 UTIL = 'Utilities'
@@ -33,20 +33,17 @@ class Portfolio():
     """
     Initialize Portfolio object with positions and their quantities. Initialize
     the amt_categories dictionary (used to keep track of how many positions of 
-    each category are in the portfolio). 
-
-    Parameters:
-        w_to_change: int 
-        timeline: int
-        positions: (string, int) list 
+    each category are in the portfolio).  
 
     Returns: 
         Portfolio Object 
     """
     def __init__(self):
+        self.last_update = '3/31/2011'
         self.amt_categories = {
             COMM: 100,
             UTIL: 100,
+            ENER: 100,
             RE: 100,
             CONS: 100,
             HC: 100,
@@ -62,40 +59,38 @@ class Portfolio():
     Returns the current values of each sector.
 
     Parameter:
-        date: datetime.datetime
+        date: string (format: m/dd/yyyy)
 
     Returns:
         {string: float} dict
     """
     def get_sector_values(self, date):
-        return {
-            COMM: 0,
-            UTIL: 0,
-            RE: 0,
-            CONS: 0,
-            HC: 0,
-            FIN: 0,
-            IND: 0,
-            MAT: 0,
-            COND: 0,
-            IT: 0
-        }
+        sector_values = {}
+        for s in SECTORS:
+            val = sectordata.get_sector_value(s, date)
+            sector_values[s] = val 
+        return sector_values
 
 
     """
     Returns the current value of the portfolio.
 
     Parameter:
-        date: datetime.datetime
+        date: string (format: m/dd/yyyy)
 
     Returns:
         int
     """
     def get_portfolio_value(self, date):
         value = 0 
-        for p in self.amt_categories:
-            value += self.amt_categories[p]
-        return value
+        for s in SECTORS:
+            amt_s = self.amt_categories[s]
+            init_price = sectordata.get_sector_value(s, self.last_update)
+            num_shares = amt_s / init_price 
+            price_today = sectordata.get_sector_value(s, date)
+            value_today = num_shares * price_today
+            value += value_today
+        return value 
 
 
     """
@@ -103,7 +98,7 @@ class Portfolio():
     'ideal' distribution again.
 
     Parameter:
-        date: datetime.datetime
+        date: string (format: m/dd/yyyy)
     """
     def rebalance_portfolio(self, date):
         portfolio_value = self.get_portfolio_value(date)
@@ -112,5 +107,8 @@ class Portfolio():
             amt_sector = portfolio_value * IDEAL_RATIOS[s]
             amts_to_invest[s] = amt_sector
         self.amt_categories = amts_to_invest
+        self.last_update = date 
+
+
 
 
