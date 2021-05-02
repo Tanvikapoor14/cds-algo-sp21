@@ -35,23 +35,26 @@ class Portfolio():
     the amt_categories dictionary (used to keep track of how many positions of 
     each category are in the portfolio).  
 
+    Parameters:
+        start_amount: int 
+
     Returns: 
         Portfolio Object 
     """
-    def __init__(self):
+    def __init__(self, start_amount):
         self.last_update = '3/31/2011'
         self.amt_categories = {
-            COMM: 100,
-            UTIL: 100,
-            ENER: 100,
-            RE: 100,
-            CONS: 100,
-            HC: 100,
-            FIN: 100,
-            IND: 100,
-            MAT: 100,
-            COND: 100,
-            IT: 100
+            COMM: start_amount,
+            UTIL: start_amount,
+            ENER: start_amount,
+            RE: start_amount,
+            CONS: start_amount,
+            HC: start_amount,
+            FIN: start_amount,
+            IND: start_amount,
+            MAT: start_amount,
+            COND: start_amount,
+            IT: start_amount
         }
 
 
@@ -59,7 +62,7 @@ class Portfolio():
     Returns the current values of each sector.
 
     Parameter:
-        date: string (format: m/dd/yyyy)
+        date: string (format: mm/dd/yyyy)
 
     Returns:
         {string: float} dict
@@ -76,7 +79,7 @@ class Portfolio():
     Returns the current value of the portfolio.
 
     Parameter:
-        date: string (format: m/dd/yyyy)
+        date: string (format: mm/dd/yyyy)
 
     Returns:
         int
@@ -98,7 +101,7 @@ class Portfolio():
     'ideal' distribution again.
 
     Parameter:
-        date: string (format: m/dd/yyyy)
+        date: string (format: mm/dd/yyyy)
     """
     def rebalance_portfolio(self, date):
         portfolio_value = self.get_portfolio_value(date)
@@ -110,5 +113,22 @@ class Portfolio():
         self.last_update = date 
 
 
+# p = Portfolio(100)
+# p.rebalance_portfolio('3/31/2011')
 
+# start = 0 
+# for i in p.amt_categories:
+#     start += p.amt_categories[i]
 
+# print(f'Start: {p.amt_categories}\n\n')
+# print(f'START: {start}\n')
+
+# p.rebalance_portfolio('4/30/2021')
+
+# print(f'End: {p.amt_categories}\n\n')
+
+# final = 0 
+# for i in p.amt_categories:
+#     final += p.amt_categories[i]
+
+# print(f'FINAL: {final}')
