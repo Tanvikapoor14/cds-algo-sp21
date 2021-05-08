@@ -154,6 +154,7 @@ def main(x):
     # print(x)
     # print([(j+1, size0+i) for i,j in enumerate(cols, 1)])
     #2) compute and plot correl matrix 
+    #print(x)
     cov, corr = x.cov(), x.corr()
     #plotCorrMatrix('HRP3_corr0.png', corr, labels=corr.columns)
     #3) cluster 

@@ -1,5 +1,6 @@
 import sectordata
 import hrp
+import datetime
 
 COMM = 'Communication'
 UTIL = 'Utilities'
@@ -57,6 +58,7 @@ class Portfolio():
             COND: start_amount,
             IT: start_amount
         }
+        self.past_ratios = []
 
 
     """
@@ -105,18 +107,33 @@ class Portfolio():
         date: string (format: YYYY-MM-DD)
     """
     def rebalance_portfolio(self, date):
-        data = sectordata.get_sectors_delta('2011-04-01', date)
-        if not data.empty:
-            del data['S&P_500']
-            ratios = hrp.main(data)
+        begin_date = (datetime.date.fromisoformat(date) - datetime.timedelta(days=365)).isoformat()
+        data = sectordata.get_sectors_delta(begin_date, date)
+        flag = True
+        while data.empty:
+            if flag:
+                date = (datetime.date.fromisoformat(date) + datetime.timedelta(days=1)).isoformat()
+                data = sectordata.get_sectors_delta(begin_date, date)
+                flag = False
+            else:
+                begin_date = (datetime.date.fromisoformat(begin_date) + datetime.timedelta(days=1)).isoformat()
+                data = sectordata.get_sectors_delta(begin_date, date)
+                flag = True
+            if not data.empty:
+                break
+                
+            
+        del data['S&P_500']
+        ratios = hrp.main(data)
+        self.past_ratios.append(ratios)
         
-            portfolio_value = self.get_portfolio_value(date)
-            amts_to_invest = {}
-            for s in SECTORS:
-                amt_sector = portfolio_value * ratios[s]
-                amts_to_invest[s] = amt_sector
-            self.amt_categories = amts_to_invest
-            self.last_update = date 
+        portfolio_value = self.get_portfolio_value(date)
+        amts_to_invest = {}
+        for s in SECTORS:
+            amt_sector = portfolio_value * ratios[s]
+            amts_to_invest[s] = amt_sector
+        self.amt_categories = amts_to_invest
+        self.last_update = date 
 
 
 # p = Portfolio(100)
